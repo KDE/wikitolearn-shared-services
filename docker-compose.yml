@@ -12,21 +12,30 @@ services:
     ports:
       - "9080:9080"
       - "9443:9443"
-      - "10990:10990"
   zookeeper:
     image: wurstmeister/zookeeper
     restart: on-failure
     ports:
       - "2181:2181"
+    volumes:
+      - zookeeper-conf:/opt/zookeeper-3.4.9/conf
+      - zookeeper-data:/opt/zookeeper-3.4.9/data
   kafka:
     image: wurstmeister/kafka:0.10.1.1
     environment:
       KAFKA_ADVERTISED_HOST_NAME: ${KAFKA_ADVERTISED_HOST_NAME}
       KAFKA_ADVERTISED_PORT:  ${KAFKA_ADVERTISED_PORT}
-      KAFKA_ZOOKEEPER_CONNECT: ${ZOOKEEPER_HOST_NAME}:2181
-      KAFKA_CREATE_TOPICS:  ${KAFKA_TOPICS}
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: courses:1:1,chapters:1:1,pages:1:1
     restart: on-failure
     ports:
       - "${KAFKA_ADVERTISED_PORT}:${KAFKA_ADVERTISED_PORT}"
     depends_on:
       - zookeeper
+    volumes:
+      - kafka:/kafka
+
+volumes:
+  kafka:
+  zookeeper-conf:
+  zookeeper-data:
