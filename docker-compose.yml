@@ -3,7 +3,6 @@ services:
   keycloak:
     image: jboss/keycloak:3.4.0.Final
     command: ["-b", "0.0.0.0", "-Dkeycloak.migration.action=import", "-Dkeycloak.migration.provider=dir", "-Dkeycloak.migration.dir=/opt/jboss/keycloak/realm-config", "-Dkeycloak.migration.strategy=OVERWRITE_EXISTING", "-Djboss.socket.binding.port-offset=1000"]
-    restart: on-failure
     volumes:
       - ./config/keycloak:/opt/jboss/keycloak/realm-config
     environment:
@@ -14,7 +13,6 @@ services:
       - "9443:9443"
   zookeeper:
     image: wurstmeister/zookeeper
-    restart: on-failure
     ports:
       - "2181:2181"
     volumes:
@@ -27,7 +25,6 @@ services:
       KAFKA_ADVERTISED_PORT:  ${KAFKA_ADVERTISED_PORT}
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CREATE_TOPICS: courses:1:1,chapters:1:1,pages:1:1
-    restart: on-failure
     ports:
       - "${KAFKA_ADVERTISED_PORT}:${KAFKA_ADVERTISED_PORT}"
     depends_on:
