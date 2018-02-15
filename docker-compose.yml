@@ -1,20 +1,34 @@
 version: '3.4'
 services:
   keycloak:
-    image: jboss/keycloak:3.4.0.Final
+    image: jboss/keycloak-mysql:3.4.0.Final
     command: ["-b", "0.0.0.0", "-Dkeycloak.migration.action=import", "-Dkeycloak.migration.provider=dir", "-Dkeycloak.migration.dir=/opt/jboss/keycloak/realm-config", "-Dkeycloak.migration.strategy=OVERWRITE_EXISTING", "-Djboss.socket.binding.port-offset=1000"]
     volumes:
       - ./config/keycloak:/opt/jboss/keycloak/realm-config
     environment:
       KEYCLOAK_USER: ${KEYCLOAK_USER}
       KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+      MYSQL_PORT_3306_TCP_ADDR: keycloak-db
+      MYSQL_PORT_3306_TCP_PORT: 3306
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: keycloak
     ports:
       - "9080:9080"
       - "9443:9443"
+    depends_on:
+      - zookeeper
+  keycloak-db:
+    image: mysql
+    volumes:
+      - keycloak-db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: keycloak
   zookeeper:
     image: wurstmeister/zookeeper
-    ports:
-      - "2181:2181"
     volumes:
       - zookeeper-conf:/opt/zookeeper-3.4.9/conf
       - zookeeper-data:/opt/zookeeper-3.4.9/data
@@ -36,3 +50,4 @@ volumes:
   kafka:
   zookeeper-conf:
   zookeeper-data:
+  keycloak-db:
