@@ -2,9 +2,7 @@ version: '3.4'
 services:
   keycloak:
     image: jboss/keycloak-mysql:3.4.3.Final
-    command: ["-b", "0.0.0.0", "-Dkeycloak.migration.action=import", "-Dkeycloak.migration.provider=dir", "-Dkeycloak.migration.dir=/opt/jboss/keycloak/realm-config", "-Dkeycloak.migration.strategy=IGNORE_EXISTING", "-Djboss.socket.binding.port-offset=1000"]
-    volumes:
-      - ./config/keycloak:/opt/jboss/keycloak/realm-config
+    command: ["-b", "0.0.0.0", "-Djboss.socket.binding.port-offset=1000"]
     environment:
       KEYCLOAK_USER: ${KEYCLOAK_USER}
       KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
