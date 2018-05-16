@@ -1,7 +1,7 @@
 # wikitolearn-shared-services
 
 ## Synopsis
-This repository contains WikiToLearn shared services like Keycloak or Apache Kafka.
+This repository contains WikiToLearn shared services like Keycloak.
 Since they are _shared dependencies_ among other architecture services they have to be run once in a development environment.
 Consiquently, they cannot be specified into `docker-compose.yml` file of their consumers.
 
