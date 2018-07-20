@@ -25,6 +25,15 @@ services:
       MYSQL_DATABASE: keycloak
       MYSQL_USER: keycloak
       MYSQL_PASSWORD: keycloak
+  shared-mongodb-4:
+    image: "mongo:4"
+    ports:
+      - "27017:27017"
+    volumes:
+    - shared-mongodb-4-configdb:/data/configdb
+    - shared-mongodb-4-db:/data/db
 
 volumes:
+  shared-mongodb-4-configdb:
+  shared-mongodb-4-db:
   keycloak-db:
