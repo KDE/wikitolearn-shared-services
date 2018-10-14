@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   keycloak:
-    image: jboss/keycloak-mysql:3.4.3.Final
+    image: jboss/keycloak:4.5.0.Final
     command: ["-b", "0.0.0.0", "-Djboss.socket.binding.port-offset=1000"]
     environment:
       KEYCLOAK_USER: ${KEYCLOAK_USER}
